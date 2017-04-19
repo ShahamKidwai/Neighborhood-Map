@@ -8,13 +8,17 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
       
-      html, body {
+      html, body, .top, main{
         width: 100%;
 		height: 100%;
       }
 	  
+	  a#menu {
+              text-align: right;
+       }
+	  
 	  #map {
-		  height: 91%;
+		  height: 100%;
 		  width: 100%;		 
 		 }
 		  
@@ -22,13 +26,12 @@
         width: 40px;
         fill: #000;
       }
-      nav {
+      nav, main {
         padding: 1em;
         box-sizing: border-box;
       }
-	  
-	   .top {
-       
+	 
+	 .top {  
         box-sizing: border-box;
       }
       .top {
@@ -46,6 +49,7 @@
         width: 300px;
         height: 100%;
         position: absolute;
+		z-index: 1;
         /* This trasform moves the drawer off canvas. */
         -webkit-transform: translate(-300px, 0);
         transform: translate(-300px, 0);
@@ -61,12 +65,19 @@
 
         /* We open the drawer. */
         nav#drawer {
-		  
-          position:relative;
           -webkit-transform: translate(0, 0);
           transform: translate(0, 0);
         }
-}
+		
+		nav#drawer{
+		 position: fixed;
+         top: 0;
+		 left: 0;
+         z-index: 1;
+         }
+		}
+		
+
       /* If there is enough space (> 600px), we keep the drawer open all the time. */
       @media (min-width: 600px) {
 
@@ -83,12 +94,14 @@
           /* Flex-grow streches the main content to fill all available space. */
           flex-grow: 1;
         }
-      
-	  #map {
-	      margins: auto;
-		  width: auto;	
-          flex-grow: 1;	  
+		 main {
+		   width: auto;
+		   flex-grow: 1;
+		   width: 100%;
+		   height: 100%;
+		   position: relative;
 		 }
+      
 	  }
 
       /* If there is space (> 800px), we keep the drawer open by default. */
@@ -108,11 +121,17 @@
 	
 	<div class = "top">
 	    <nav class="navbar navbar-inverse bg-primary">
-		<p>Hello</p>
+		<a id="menu">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
+        </svg>
+      </a>
   <!-- Navbar content -->
         </nav> 	  
-		<div id = "map"></div>
-		<script>
+		<main class="light_blue">
+   
+        <div id="map"></div>
+	    <script>
 	      var map;
 	        function initMap(){
 	        //Constructor creates a new map - only center and zoom are required.
@@ -122,10 +141,29 @@
 	           });
 		     }
 	    </script>
+	    
 	     <script async defer
 	      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlbQxLjj3vihkbjM3CXZxcXDaDR32xgYw&v=3&callback=initMap">
 	     </script>
+     </main>
 	</div>
+	 <script>
+      /*
+       * Open the drawer when the menu ison is clicked.
+       */
+      var menu = document.querySelector('#menu');
+      var main = document.querySelector('main');
+      var drawer = document.querySelector('#drawer');
+
+      menu.addEventListener('click', function(e) {
+        drawer.classList.toggle('open');
+        e.stopPropagation();
+      });
+      top.addEventListener('click', function() {
+        drawer.classList.remove('open');
+      });
+
+    </script>
     
 	      <!-- jQuery first, then Tether, then Bootstrap JS. -->
            <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>

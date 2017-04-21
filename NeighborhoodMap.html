@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title></title>
+     <link rel="stylesheet" type="text/css" href="css/default-styles.css">
+	 <link href="css/bootstrap.min.css" rel="stylesheet">
+     <style type="text/css">
+      
+      html, body, .top, main{
+        width: 100%;
+		height: 100%;
+      }
+	  
+	  a#menu {
+              text-align: right;
+       }
+	  
+	  #map {
+		  height: 100%;
+		  width: 100%;		 
+		 }
+		  
+      a#menu svg {
+        width: 40px;
+        fill: #000;
+      }
+      nav, main {
+        padding: 1em;
+        box-sizing: border-box;
+      }
+	 
+	 .top {  
+        box-sizing: border-box;
+      }
+      .top {
+        width: 100%;
+        height: 100%;
+      }
+      /*
+       * Off-canvas layout styles.
+       */
+      /* Since we're mobile-first, by default, the drawer is hidden. */
+      nav#drawer {
+        width: 300px;
+        height: 100%;
+        position: absolute;
+		z-index: 1;
+        /* This trasform moves the drawer off canvas. */
+        -webkit-transform: translate(-300px, 0);
+        transform: translate(-300px, 0);
+        /* Optionally, we animate the drawer. */
+        transition: transform 0.3s ease;
+      }
+      nav#drawer.open {
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+      }
+     
+	  @media (min-width: 600px) {
+        /* We open the drawer. */
+        nav#drawer {
+          -webkit-transform: translate(0, 0);
+          transform: translate(0, 0);
+        }
+		
+		nav#drawer{
+		 position: absolute;
+         top: 0;
+		 left: 0;
+         z-index: 1;
+         }
+		}
+		
+      /* If there is enough space (> 600px), we keep the drawer open all the time. */
+      @media (min-width: 600px) {
+        /* We use Flexbox on the parent. */
+        body {
+          display: -webkit-flex;
+          display: flex;
+          -webkit-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+        }
+        .top {
+          width: auto;
+          /* Flex-grow streches the main content to fill all available space. */
+          flex-grow: 1;
+        }
+		 main {
+		   width: auto;
+		   flex-grow: 1;
+		   width: 100%;
+		   height: 100%;
+		   position: relative;
+		 }
+      
+	  }
+      /* If there is space (> 800px), we keep the drawer open by default. */
+      @media (min-width: 600px) {
+        main > #menu:after {
+          content: 'The drawer stays open if width > 600px';
+        }
+      }
+	  
+	  nav.navbar.navbar-inverse.bg-primary {
+          z-index: 2;
+        }
+		
+	  
+	  a#menu {
+              text-align: right;
+       }
+	  
+	  nav#drawer {
+            margin-top: 60px;
+       }
+	   
+	  h1 {
+           color: white;
+	  } 
+	   
+     </style>
+     </head>
+     <body>
+     <nav id="drawer" class="dark_blue">
+        <ul data-bind="foreach: LocationList">
+	    <li data-bind="text: title"></li>
+	</ul>
+     </nav>
+	
+	 <div class = "top">
+	    <nav class="navbar navbar-inverse bg-primary">
+		<div class = "row">
+		 <div class = "col-md-4">
+		<div class = "buttons">
+	    <button id = "showNav">Show Nav</button>
+        <button id = "hideNav">Hide Nav</button>
+		</div>
+		</div>
+		<div class = "col-md-7">
+		 <h1><center>My Favorite Places in Houston Downtown<Center></h1>
+		</div>
+		<div class = "col-md-1">
+		<a id="menu">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
+        </svg>
+        </a>
+		</div>
+	    </div>
+     <!-- Navbar content -->
+        </nav> 	  
+		<main class="light_blue">
+   
+        <div id="map"></div>
+
+	    
+	     <script async defer
+	      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAlbQxLjj3vihkbjM3CXZxcXDaDR32xgYw&v=3&callback=initMap">
+	     </script>
+        </main>
+	</div>
+	 <script>
+      /*
+       * Open the drawer when the menu ison is clicked.
+       */
+      var menu = document.querySelector('#menu');
+	  var hide = document.querySelector('#hideNav');
+      var show = document.querySelector('#showNav');
+      var drawer = document.querySelector('#drawer');
+
+     hide.addEventListener('click', function(e) { 	 
+		 drawer.style.visibility = 'hidden';
+      }); 
+
+     show.addEventListener('click', function(e) {  
+		 drawer.style.visibility = 'visible';
+      }); 	  
+
+  	 menu.addEventListener('click', function(e) {
+        drawer.classList.toggle('open');
+        e.stopPropagation();
+      });
+     
+     </script>
+    
+	      <!-- jQuery first, then Tether, then Bootstrap JS. -->
+           <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+           <script src="js/bootstrap.min.js"></script>
+	       <script src="js/lib/knockout-3.4.2.js"></script>
+           <script src="js/app.js"></script>
+	</body>
+	</html>

@@ -125,7 +125,7 @@
      <body>
      <nav id="drawer" class="dark_blue">
         <ul data-bind="foreach: LocationList">
-	        <li data-bind="text: title, $click: $parent.selectedLocation, $parent.selectedLocation"></li>
+	       <li data-bind="text: title, click: $parent.selectedLocation"></li>
 	   </ul>
      </nav>
 	
@@ -186,7 +186,7 @@
      </script>
     
 	      <!-- jQuery first, then Tether, then Bootstrap JS. -->
-           <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
            <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
            <script src="js/bootstrap.min.js"></script>
 	       <script src="js/lib/knockout-3.4.2.js"></script>

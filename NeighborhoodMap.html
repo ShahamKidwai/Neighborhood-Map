@@ -87,7 +87,7 @@
           /* Flex-grow streches the main content to fill all available space. */
           flex-grow: 1;
         }
-		 main {
+		 ma	in {
 		   width: auto;
 		   flex-grow: 1;
 		   width: 100%;
@@ -125,8 +125,8 @@
      <body>
      <nav id="drawer" class="dark_blue">
         <ul data-bind="foreach: LocationList">
-	    <li data-bind="text: title"></li>
-	</ul>
+	        <li data-bind="text: title, $click: $parent.selectedLocation, $parent.selectedLocation"></li>
+	   </ul>
      </nav>
 	
 	 <div class = "top">

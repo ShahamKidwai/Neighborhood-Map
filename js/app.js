@@ -9,6 +9,7 @@ var locations = [{
 			  lat: 29.713807,  
 			  lng:-95.391498
 			  },
+		  marker: ''
 		  },
           {
 		   title: 'Houston Museum of Natural Science', 
@@ -16,6 +17,7 @@ var locations = [{
 			  lat: 29.721993, 
 			  lng:-95.389865
 			},
+		   marker:  ''
 		  },
           {
 		   title: 'Museum of Fine Arts', 
@@ -23,6 +25,7 @@ var locations = [{
 			   lat: 29.725605,
 			   lng: -95.390539
 			},
+			marker: ''
 		  },
           {
 			title: 'Miller Outdoor Theatre', 
@@ -30,6 +33,7 @@ var locations = [{
 				lat: 29.719181, 
 				lng:-95.388668
 		   },
+		   marker: ''
 		  },
           {
 			title: 'Rice University', 
@@ -37,7 +41,7 @@ var locations = [{
 				lat: 29.717394,
 				lng:-95.401831
 			},
-			
+			marker: ''
 		  },
           {
 			title: 'The Minil Collection', 
@@ -45,7 +49,7 @@ var locations = [{
 				lat:29.73734,
 				lng:-95.39851
 			},
-			
+			marker: ''
 		  },
           {
 		    title: 'Holocaust Museum', 
@@ -53,7 +57,7 @@ var locations = [{
 				lat:29.725153, 
 				lng:-95.38566
 				},
-			
+			marker: ''
 		  }];
 
 		  
@@ -79,13 +83,14 @@ var locations = [{
             animation: google.maps.Animation.DROP,
             id: i
           });
-		 vm.LocationList()[i].marker = marker;
+		  
 	     // Push the marker to our array of markers.
 	     markers.push(marker);
 	   
 	   
 		 marker.addListener('click', function(){
 		    populateInfoWindow(this, largeInfowindow);
+			toggleBounce(this, marker);
 		 });
 		 // Extend the boundaries of the map for each marker
 		 bounds.extend(markers[i].position);
@@ -103,41 +108,61 @@ var locations = [{
 	    }
 	 } 
 		map.fitBounds(bounds);
+		   
+		   function toggleBounce(marker) {
+                //Create function to animate markers when clicked
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(function() {
+                    marker.setAnimation(google.maps.Animation.null);
+                }, 500);
+                
+            }
+		
         ko.applyBindings(new ViewModel());		
 }		  
 		  
 		  
-var locator = function(data, id) {
+var locator = function(data, i) {
     this.title = ko.observable(data.title);
     this.lat = ko.observable(data.location.lat);
-    this.lng = ko.observable(data.location.lng);			   
-    }				   
+    this.lng = ko.observable(data.location.lng);
+    this.marker = new google.maps.Marker({
+            map: map,
+            position: data.location,
+            title: data.title,
+            animation: google.maps.Animation.DROP,
+            id: i
+          });
+    
+	}				   
 
 
 var ViewModel = function() {
     var self = this;
 	this.LocationList = ko.observableArray([]);
 	 for (var i = 0 ; i < locations.length; i++ )
-        {
+          {
 		   self.LocationList.push(new locator(locations[i], i));
-	    };
-	 
-	        this.currentLoc = ko.observable(this.LocationList()[0]);
-	
-	  this.selectedLocation = function() {
-		    google.maps.event.trigger(self.currentLoc().marker, 'click');
-         };
-	
-	
-         this.setcurrentLoc = function(clickeditem){
-	        self.currentLoc(clickeditem);   
+	      };
+	        
+		this.currentLoc = ko.observable(this.LocationList()[0]);
+			
+         this.selectedLocation = function(clickeditem){
+	         self.currentLoc(clickeditem);
+			 var marker = self.currentLoc().marker;
+             google.maps.event.trigger(marker, 'click');			
          };
   
      }
 	
 
 
-    vm = new ViewModel();
+    
+  
+		  
+		  
+		  
+		  
   
 		  
 		  

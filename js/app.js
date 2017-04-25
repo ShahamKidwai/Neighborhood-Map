@@ -1,7 +1,28 @@
 var map;
-		  
+var largeInfowindow;
+
 var markers = [];
-		  
+
+	function populateInfoWindow(marker, infowindow){
+      //Check to make sure the infowindow is not already opened on this marker.
+	    if (infowindow.marker != marker){
+	       infowindow.marker = marker;
+		   infowindow.setContent('<div>' + marker.title + '</div>');
+		   infowindow.open(map, marker);
+		   infowindow.addListener('closeclick', function(){
+		      infowindow.setMarker = null;
+		     });  
+	    }
+	 }
+
+ function toggleBounce(marker) {
+                //Create function to animate markers when clicked
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                setTimeout(function() {
+                    marker.setAnimation(google.maps.Animation.null);
+                }, 500);
+                
+            }	 
 
 var locations = [{
 	      title: 'Houston Zoo',
@@ -65,10 +86,10 @@ var locations = [{
 	        //Constructor creates a new map - only center and zoom are required.
 	            map = new google.maps.Map(document.getElementById('map'), {
 	            center: {lat: 29.727029, lng: -95.389134},
-		        zoom: 12
+		        zoom: 11
 	           });
 			   
-	   var largeInfowindow = new google.maps.InfoWindow();
+	        largeInfowindow = new google.maps.InfoWindow();
 	   var bounds = new google.maps.LatLngBounds();
 	  // The following group uses the location array to create an array of markers to initialize. 
 	   for (var i = 0; i < locations.length; i++){
@@ -96,27 +117,10 @@ var locations = [{
 		 bounds.extend(markers[i].position);
 		}
 	
-	function populateInfoWindow(marker, infowindow){
-      //Check to make sure the infowindow is not already opened on this marker.
-	    if (infowindow.marker != marker){
-	       infowindow.marker = marker;
-		   infowindow.setContent('<div>' + marker.title + '</div>');
-		   infowindow.open(map, marker);
-		   infowindow.addListener('closeclick', function(){
-		      infowindow.setMarker = null;
-		     });  
-	    }
-	 } 
+
 		map.fitBounds(bounds);
 		   
-		   function toggleBounce(marker) {
-                //Create function to animate markers when clicked
-                marker.setAnimation(google.maps.Animation.BOUNCE);
-                setTimeout(function() {
-                    marker.setAnimation(google.maps.Animation.null);
-                }, 500);
-                
-            }
+	
 		
         ko.applyBindings(new ViewModel());		
 }		  
@@ -134,6 +138,12 @@ var locator = function(data, i) {
             id: i
           });
     
+	 this.marker.addListener('click', function(){
+		    populateInfoWindow(this, largeInfowindow);
+			toggleBounce(this, marker);
+		 });
+	
+	
 	}				   
 
 
@@ -145,7 +155,7 @@ var ViewModel = function() {
 		   self.LocationList.push(new locator(locations[i], i));
 	      };
 	        
-		this.currentLoc = ko.observable(this.LocationList()[0]);
+		 this.currentLoc = ko.observable(this.LocationList()[0]);
 			
          this.selectedLocation = function(clickeditem){
 	         self.currentLoc(clickeditem);
@@ -157,14 +167,3 @@ var ViewModel = function() {
 	
 
 
-    
-  
-		  
-		  
-		  
-		  
-  
-		  
-		  
-		  
-		  

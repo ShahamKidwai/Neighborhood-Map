@@ -3,17 +3,46 @@ var largeInfowindow;
 
 var markers = [];
 
-	function populateInfoWindow(marker, infowindow){
+function populateInfoWindow(marker, infowindow){
       //Check to make sure the infowindow is not already opened on this marker.
-	    if (infowindow.marker != marker){
+	  if (infowindow.marker != marker){
 	       infowindow.marker = marker;
 		   infowindow.setContent('<div>' + marker.title + '</div>');
 		   infowindow.open(map, marker);
 		   infowindow.addListener('closeclick', function(){
 		      infowindow.setMarker = null;
-		     });  
-	    }
-	 }
+		});
+		var streetViewService = new google.maps.StreetViewService();
+		var radius = 50;
+		
+		function getStreetView(data, status){
+		  if (status == google.maps.StreetViewStatus.OK){
+		     var nearStreetViewLocation = data.location.latLng;
+			 var heading = google.maps.geometry.spherical.computeHeading(
+			   nearStreetViewLocation, marker.position);
+			   infowindow.setContent('<div><b><h3>'+ marker.title + '</h3></b></div><br><div id = "pano"></div>');
+			   var panoramaOptions = {
+			     position: nearStreetViewLocation,
+				 pov:{
+				   heading: heading,
+				   pitch: 30
+				 }
+			   };
+			   
+			   var panorama = new google.maps.StreetViewPanorama(
+			     document.getElementById('pano'), panoramaOptions);
+			   } else {
+			     infowindow.setContent('<div>' + marker.title + '</div>'+
+				     '<div>No Street View Found</div>');
+			   
+			   }
+			   }
+			 
+			 streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+			 infowindow.open(map,marker);
+		  }
+}
+		
 
  function toggleBounce(marker) {
                 //Create function to animate markers when clicked
@@ -165,5 +194,3 @@ var ViewModel = function() {
   
      }
 	
-
-

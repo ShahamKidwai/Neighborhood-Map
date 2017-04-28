@@ -1,26 +1,25 @@
 var map;
 var largeInfowindow;
-
 var markers = [];
+var bounds;
+
 
 function populateInfoWindow(marker, infowindow){
       //Check to make sure the infowindow is not already opened on this marker.
 	  if (infowindow.marker != marker){
 	       infowindow.marker = marker;
-		   infowindow.setContent('<div>' + marker.title + '</div>');
-		   infowindow.open(map, marker);
 		   infowindow.addListener('closeclick', function(){
-		      infowindow.setMarker = null;
-		});
-		var streetViewService = new google.maps.StreetViewService();
+		        infowindow.setMarker = null;
+		    });
+		
+	    var streetViewService = new google.maps.StreetViewService();
 		var radius = 50;
 		
-		function getStreetView(data, status){
+		  function getStreetView(data, status){
 		  if (status == google.maps.StreetViewStatus.OK){
 		     var nearStreetViewLocation = data.location.latLng;
 			 var heading = google.maps.geometry.spherical.computeHeading(
 			   nearStreetViewLocation, marker.position);
-			   infowindow.setContent('<div><b><h3>'+ marker.title + '</h3></b></div><br><div id = "pano"></div>');
 			   var panoramaOptions = {
 			     position: nearStreetViewLocation,
 				 pov:{
@@ -34,13 +33,12 @@ function populateInfoWindow(marker, infowindow){
 			   } else {
 			     infowindow.setContent('<div>' + marker.title + '</div>'+
 				     '<div>No Street View Found</div>');
-			   
 			   }
 			   }
 			 
 			 streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
 			 infowindow.open(map,marker);
-		  }
+		 }
 }
 		
 
@@ -115,48 +113,20 @@ var locations = [{
 	        //Constructor creates a new map - only center and zoom are required.
 	            map = new google.maps.Map(document.getElementById('map'), {
 	            center: {lat: 29.727029, lng: -95.389134},
-		        zoom: 11
+		        zoom: 13
 	           });
 			   
 	        largeInfowindow = new google.maps.InfoWindow();
-	   var bounds = new google.maps.LatLngBounds();
-	  // The following group uses the location array to create an array of markers to initialize. 
-	   for (var i = 0; i < locations.length; i++){
-	     // Get the position from the location array.
-		 var position = locations[i].location;
-		 var title = locations[i].title;
-		 // Create a marker per location, and put into markers array.
-		 var marker = new google.maps.Marker({
-            map: map,
-            position: position,
-            title: title,
-            animation: google.maps.Animation.DROP,
-            id: i
-          });
-		  
-	     // Push the marker to our array of markers.
-	     markers.push(marker);
-	   
-	   
-		 marker.addListener('click', function(){
-		    populateInfoWindow(this, largeInfowindow);
-			toggleBounce(this, marker);
-		 });
-		 // Extend the boundaries of the map for each marker
-		 bounds.extend(markers[i].position);
-		}
-	
-
-		map.fitBounds(bounds);
-		   
-	
-		
-        ko.applyBindings(new ViewModel());		
+	        bounds = new google.maps.LatLngBounds();
+	        // The following group uses the location array to create an array of markers to initialize. 
+	        map.fitBounds(bounds);
+            ko.applyBindings(new ViewModel());		
 }		  
 		  
 		  
 var locator = function(data, i) {
-    this.title = ko.observable(data.title);
+    var self = this;
+	this.title = ko.observable(data.title);
     this.lat = ko.observable(data.location.lat);
     this.lng = ko.observable(data.location.lng);
     this.marker = new google.maps.Marker({
@@ -166,14 +136,34 @@ var locator = function(data, i) {
             animation: google.maps.Animation.DROP,
             id: i
           });
-    
-	 this.marker.addListener('click', function(){
-		    populateInfoWindow(this, largeInfowindow);
-			toggleBounce(this, marker);
+	
+	this.marker.addListener('click', function(){
+		    getdata(this)
+			toggleBounce(self.marker);
 		 });
+	  
+	  bounds.extend(this.marker.position);
+    }	
+
+     function getdata(marker){
+		  var query = marker.title;
+		  var msg = "no article found"
+		  var wikiUrl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + query;
+            $.ajax({
+                     url: wikiUrl,
+                     dataType: "jsonp",
+                     success: function( response ) {
+                     var wikiStr = response[1];
+                     var wikipediaURL = 'https://en.wikipedia.org/wiki/' + wikiStr;
+                     largeInfowindow.setContent('<div><h2>' + marker.title + '</h2>' + '</div><div id="pano"></div>'+ '<br><br><h3>'+'Wikipedia'+'</h3>'+'<a href="' + wikipediaURL + '">' + '</p><h6>' + response[2] + '</h6></a>');
+                     populateInfoWindow(marker, largeInfowindow);
+                     },
+                      error: function(msg) {
+                         console.log(msg);
+                     }
+                    });
+	      }
 	
-	
-	}				   
 
 
 var ViewModel = function() {
@@ -183,14 +173,27 @@ var ViewModel = function() {
           {
 		   self.LocationList.push(new locator(locations[i], i));
 	      };
-	        
-		 this.currentLoc = ko.observable(this.LocationList()[0]);
-			
-         this.selectedLocation = function(clickeditem){
-	         self.currentLoc(clickeditem);
-			 var marker = self.currentLoc().marker;
-             google.maps.event.trigger(marker, 'click');			
-         };
-  
+	      this.show = ko.observable(true);
+		  this.currentLoc = ko.observable(this.LocationList()[0]);
+		  this.toggleNav = ko.observable(true);	
+		 
+		  this.shownav = function(){
+			self.show(true);
+		}
+		
+		this.hidenav = function(){
+		  self.show(false);
+		}
+		
+		this.toggleNavBar = function ()
+		{
+		  self.toggleNav(!self.toggleNav());
+		}
+					
+        this.selectedLocation = function(clickeditem){
+	        self.currentLoc(clickeditem);
+			var marker = self.currentLoc().marker;
+            google.maps.event.trigger(marker, 'click');			
+        };
      }
 	

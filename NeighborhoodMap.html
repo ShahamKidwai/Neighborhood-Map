@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
      <meta charset="utf-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	 <meta name="viewport" content="width=device-width,initial-scale=1">
      <title></title>
 	 <link href="css/bootstrap.min.css" rel="stylesheet">
 	 <link rel="stylesheet" type="text/css" href="css/default-styles.css">
@@ -10,27 +10,30 @@
     
      </head>
      <body>
-     <nav id="drawer" class="dark_blue">
-      
+     <nav id="drawer" class="dark_blue"  data-bind="css: { 'open': toggleNav}, visible: show">
+		<br>
+		<br>
+		<br>
+		<br>
 		<ul data-bind="foreach: LocationList">
-	       <li data-bind="text: title, click: $parent.selectedLocation"></li>
+	       <li class = "listone" data-bind="text: title, click: $parent.selectedLocation"></li>
+	       <br>
 	   </ul>
      </nav>
-	
 	 <div class = "top">
 	    <nav class="navbar navbar-inverse bg-primary">
 		<div class = "row">
 		 <div class = "col-md-4">
 		<div class = "buttons">
-	    <button id = "showNav">Show Nav</button>
-        <button id = "hideNav">Hide Nav</button>
+	    <button id = "showNav" data-bind="click: shownav" >Show Nav</button>
+        <button id = "hideNav" data-bind="click: hidenav">Hide Nav</button>
 		</div>
 		</div>
 		<div class = "col-md-7">
 		 <h1><center>My Favorite Places in Houston Downtown<Center></h1>
 		</div>
 		<div class = "col-md-1">
-		<a id="menu">
+		<a id="menu" data-bind= "click: toggleNavBar">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
         </svg>
@@ -40,35 +43,9 @@
      <!-- Navbar content -->
         </nav> 	  
 		<main class="light_blue">
-   
-        <div id="map"></div>
-
+            <div id="map"></div>
         </main>
 	</div>
-	 <script>
-      /*
-       * Open the drawer when the menu ison is clicked.
-       */
-      var menu = document.querySelector('#menu');
-	  var hide = document.querySelector('#hideNav');
-      var show = document.querySelector('#showNav');
-      var drawer = document.querySelector('#drawer');
-
-     hide.addEventListener('click', function(e) { 	 
-		 drawer.style.visibility = 'hidden';
-      }); 
-
-     show.addEventListener('click', function(e) {  
-		 drawer.style.visibility = 'visible';
-      }); 	  
-
-  	 menu.addEventListener('click', function(e) {
-        drawer.classList.toggle('open');
-        e.stopPropagation();
-      });
-     
-     </script>
-    
 	      <!-- jQuery first, then Tether, then Bootstrap JS. -->
            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
            <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>

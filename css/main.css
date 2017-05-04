@@ -164,6 +164,17 @@ h1 {
 	
 li.listone {
    list-style: none;
+   font-family: 'Eagle Lake', cursive;
+   font-size: 16px;
+}
+
+button.btn-outline-primary {
+    color: #ecf1ef;
+    background-image: none;
+    background-color: transparent;
+    border-color: #8302d8;
+	font-family: 'Architects Daughter', cursive;
+	font-size: 20px;
 }
 
 ul > li.listone {
@@ -174,7 +185,9 @@ ul:hover > li.listone:not(:hover) {
     opacity: 0.5;
 }
 	
-
+.topheading{
+	font-family: 'Gloria Hallelujah', cursive;
+}
 
 
 

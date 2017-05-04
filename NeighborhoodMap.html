@@ -7,7 +7,7 @@
 	 <link href="css/bootstrap.min.css" rel="stylesheet">
 	 <link rel="stylesheet" type="text/css" href="css/default-styles.css">
 	 <link rel="stylesheet" type="text/css" href="css/main.css">
-    
+     <link href="https://fonts.googleapis.com/css?family=Architects+Daughter|Eagle+Lake|Gloria+Hallelujah" rel="stylesheet">
      </head>
      <body>
      <nav id="drawer" class="dark_blue"  data-bind="css: { 'open': toggleNav}, visible: show">
@@ -15,8 +15,8 @@
 		<br>
 		<br>
 		<br>
-		<ul data-bind="foreach: LocationList">
-	       <li class = "listone" data-bind="text: title, click: $parent.selectedLocation"></li>
+		<ul class="list-group" data-bind="foreach: LocationList">
+	       <li class = "list-group-item active listone" data-bind="text: title, click: $parent.selectedLocation"></li>
 	       <br>
 	   </ul>
      </nav>
@@ -25,12 +25,12 @@
 		<div class = "row">
 		 <div class = "col-md-4">
 		<div class = "buttons">
-	    <button id = "showNav" data-bind="click: shownav" >Show Nav</button>
-        <button id = "hideNav" data-bind="click: hidenav">Hide Nav</button>
+		<button type="button" class="btn btn-outline-primary" data-bind="click: shownav">Show Nav</button>
+        <button type="button" class="btn btn-outline-primary" data-bind="click: hidenav">Hide Nav</button>
 		</div>
 		</div>
 		<div class = "col-md-7">
-		 <h1><center>My Favorite Places in Houston Downtown<Center></h1>
+		 <div class = "topheading"><h1>My Favorite Places in Houston Downtown</h1></div>
 		</div>
 		<div class = "col-md-1">
 		<a id="menu" data-bind= "click: toggleNavBar">

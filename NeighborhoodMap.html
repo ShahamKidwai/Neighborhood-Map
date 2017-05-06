@@ -13,9 +13,9 @@
      <nav id="drawer" class="dark_blue"  data-bind="css: { 'open': toggleNav}, visible: show">
 		<br>
 		<br>
+		<div class = "Searchbox"><span class = "Searchheading">Search Location:</span><input type="text" name="Searchbox" data-bind="textInput: searchLocation"><br></div>
 		<br>
-		<br>
-		<ul class="list-group" data-bind="foreach: LocationList">
+		<ul class="list-group" data-bind="foreach: filteredLocation">
 	       <li class = "list-group-item active listone" data-bind="text: title, click: $parent.selectedLocation"></li>
 	       <br>
 	   </ul>

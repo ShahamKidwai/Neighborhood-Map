@@ -9,7 +9,7 @@ function populateInfoWindow(marker, infowindow){
 	  if (infowindow.marker != marker){
 	       infowindow.marker = marker;
 		   infowindow.addListener('closeclick', function(){
-		        infowindow.setMarker = null;
+		        infowindow.marker = null;
 		    });
 		
 	    var streetViewService = new google.maps.StreetViewService();
@@ -155,7 +155,7 @@ var locator = function(data, i) {
                      success: function( response ) {
                      var wikiStr = response[1];
                      var wikipediaURL = 'https://en.wikipedia.org/wiki/' + wikiStr;
-                     largeInfowindow.setContent('<div><h2>' + marker.title + '</h2>' + '</div><div id="pano"></div>'+ '<br><br><h3>'+'Wikipedia'+'</h3>'+'<a href="' + wikipediaURL + '">' + '</p><h6>' + response[2] + '</h6></a>');
+                     largeInfowindow.setContent('<div><h2>' + marker.title + '</h2></div><div id="pano"></div>'+ '<br><br><h3>'+'Wikipedia'+'</h3>'+'<a href="' + wikipediaURL + '">' + '</p><h6>' + response[2] + '</h6></a>');
                      populateInfoWindow(marker, largeInfowindow);
                      },
                       error: function(msg) {
@@ -169,6 +169,8 @@ var locator = function(data, i) {
 var ViewModel = function() {
     var self = this;
 	this.LocationList = ko.observableArray([]);
+	this.searchLocation = ko.observable("")
+	 
 	 for (var i = 0 ; i < locations.length; i++ )
           {
 		   self.LocationList.push(new locator(locations[i], i));
@@ -189,7 +191,32 @@ var ViewModel = function() {
 		{
 		  self.toggleNav(!self.toggleNav());
 		}
-					
+		
+		self.filteredLocation = ko.computed(function() {
+           var search = self.searchLocation().toLowerCase();
+             if (!search) {
+             return self.LocationList();
+             } else {
+                  return ko.utils.arrayFilter(self.LocationList(), function(Location) {
+				    var title = Location.title().toLowerCase();      
+						
+                	   var matching = title.indexOf(search);
+					    
+					    var matchVal = null;
+						if (matching != -1)
+						{
+                            matchVal = Location;							
+						}
+						
+				  return matchVal;
+				  
+				  });
+          }
+        });
+		
+		
+		
+		
         this.selectedLocation = function(clickeditem){
 	        self.currentLoc(clickeditem);
 			var marker = self.currentLoc().marker;

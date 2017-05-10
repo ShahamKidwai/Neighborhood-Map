@@ -103,23 +103,51 @@ nav#drawer.open {
     }	
 }
 
+
+@media screen and (min-width: 300px) and (max-width: 304px) {
+    h1 {
+        font-size: 25px;
+       }
+	  
+	nav#drawer {
+        margin-top: 150px;
+    }  
+	  
+	  
+    }
+
+
 @media screen and (min-width: 304px) and (max-width: 400px) {
-    nav#drawer {
-        background-color: green;
-        margin-top: 240px;
+    h1 {
+        font-size: 30px;
+       }
+	   
+	nav#drawer {
+        margin-top: 190px;
     }
 }
 
 
 @media screen and (min-width: 400px) and (max-width: 435px) {
-    nav#drawer {
-        margin-top: 240px;
+    
+	h1 {
+        font-size: 30px;
+       }
+	
+	nav#drawer {
+        margin-top: 180px;
     }
 }
 
 
 @media screen and (min-width: 436px) and (max-width: 500px) {
-    nav#drawer {
+    
+	h1 {
+        font-size: 35px;
+       }
+	
+	
+	nav#drawer {
         margin-top: 200px;
     }
 }
@@ -142,6 +170,14 @@ nav#drawer.open {
         margin-top: 120px;
     }
 }
+
+@media screen and (min-width: 1000px){
+	
+	nav#drawer {
+        margin-top: 75px;
+    }  
+	  
+    }
 
 /* If there is space (> 800px), we keep the drawer open by default. */
 
@@ -175,6 +211,16 @@ button.btn-outline-primary {
     border-color: #8302d8;
 	font-family: 'Architects Daughter', cursive;
 	font-size: 20px;
+}
+
+span.Searchheading {
+    font-weight: bolder;
+	font-family: 'Eagle Lake', cursive;
+    font-size: 18px;
+}
+
+input[type="text"] {
+    width: 230px;
 }
 
 ul > li.listone {

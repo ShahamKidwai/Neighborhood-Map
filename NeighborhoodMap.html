@@ -49,8 +49,9 @@
 	      <!-- jQuery first, then Tether, then Bootstrap JS. -->
            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
            <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-           <script async defer
-	          src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyAlbQxLjj3vihkbjM3CXZxcXDaDR32xgYw&v=3&callback=initMap">
+         
+		  <script async defer
+	          src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyAlbQxLjj3vihkbjM3CXZxcXDaDR32xgYw&v=3&callback=googleSuccess" onerror="googleError()">
 	     </script>            
 		   <script src="js/bootstrap.min.js"></script>
 	       <script src="js/lib/knockout-3.4.2.js"></script>

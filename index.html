@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+     <meta charset="utf-8">
+	 <meta name="viewport" content="width=device-width,initial-scale=1">
+     <title></title>
+	 <link href="css/bootstrap.min.css" rel="stylesheet">
+	 <link rel="stylesheet" type="text/css" href="css/default-styles.css">
+	 <link rel="stylesheet" type="text/css" href="css/main.css">
+     <link href="https://fonts.googleapis.com/css?family=Architects+Daughter|Eagle+Lake|Gloria+Hallelujah" rel="stylesheet">
+     </head>
+     <body>
+     <nav id="drawer" class="dark_blue"  data-bind="css: { 'open': toggleNav}, visible: show">
+		<br>
+		<br>
+		<div class = "Searchbox"><span class = "Searchheading">Search Location:</span><input type="text" name="Searchbox" data-bind="textInput: searchLocation"><br></div>
+		<br>
+		<ul class="list-group" data-bind="foreach: filteredLocation">
+	       <li class = "list-group-item active listone" data-bind="text: title, click: $parent.selectedLocation"></li>
+	       <br>
+	   </ul>
+     </nav>
+	 <div class = "top">
+	    <nav class="navbar navbar-inverse bg-primary">
+		<div class = "row">
+		 <div class = "col-md-4">
+		<div class = "buttons">
+		<button type="button" class="btn btn-outline-primary" data-bind="click: shownav">Show Nav</button>
+        <button type="button" class="btn btn-outline-primary" data-bind="click: hidenav">Hide Nav</button>
+		</div>
+		</div>
+		<div class = "col-md-7">
+		 <div class = "topheading"><h1>My Favorite Places in Houston Downtown</h1></div>
+		</div>
+		<div class = "col-md-1">
+		<a id="menu" data-bind= "click: toggleNavBar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
+        </svg>
+        </a>
+		</div>
+	    </div>
+     <!-- Navbar content -->
+        </nav> 	  
+		<main class="light_blue">
+            <div id="map"></div>
+        </main>
+	</div>
+	      <!-- jQuery first, then Tether, then Bootstrap JS. -->
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+           <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>          
+		   <script src="js/bootstrap.min.js"></script>
+	       <script src="js/lib/knockout-3.4.2.js"></script>
+           <script src="js/app.js"></script>
+		   <script async defer
+	          src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyAlbQxLjj3vihkbjM3CXZxcXDaDR32xgYw&v=3&callback=googleSuccess" onerror="googleError()">
+	      </script>     
+	</body>
+	</html>

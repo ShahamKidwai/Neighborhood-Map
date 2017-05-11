@@ -41,7 +41,7 @@ function populateInfoWindow(marker, infowindow) {
     }
 }
 
-
+//function to set marker animation 
 function toggleBounce(marker) {
     if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
@@ -58,6 +58,7 @@ function toggleBounce(marker) {
 
 }
 
+//array of location objects
 var locations = [{
         title: 'Houston Zoo',
         location: {
@@ -75,7 +76,7 @@ var locations = [{
         marker: ''
     },
     {
-        title: 'Museum of Fine Arts',
+        title: 'Museum of Fine Arts, Houston',
         location: {
             lat: 29.725605,
             lng: -95.390539
@@ -107,7 +108,7 @@ var locations = [{
         marker: ''
     },
     {
-        title: 'Holocaust Museum',
+        title: 'Holocaust Museum Houston',
         location: {
             lat: 29.725153,
             lng: -95.38566
@@ -116,25 +117,26 @@ var locations = [{
     }
 ];
 
-	
+//callback function to set the map     
 function googleSuccess() {
     initMap();
 }
 
 
-
+//error function if google API fails to load
 var googleError = function() {
     alert('There is an error loading the Google Maps Api; Please check the console for errors!!');
 }
 
+//function to initialize map
 function initMap() {
     //Constructor creates a new map - only center and zoom are required.
     map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 16,
         center: {
             lat: 29.727029,
             lng: -95.389134
-        },
-        zoom: 13
+        }
     });
 
     largeInfowindow = new google.maps.InfoWindow();
@@ -144,12 +146,12 @@ function initMap() {
      ko.applyBindings(new ViewModel()); 
 }
 
-	
+//location constructor to create object for each location
 var locator = function(data, i) {
     var self = this;
-    this.title = ko.observable(data.title);
-    this.lat = ko.observable(data.location.lat);
-    this.lng = ko.observable(data.location.lng);
+    this.title = data.title;
+    this.lat = data.location.lat;
+    this.lng = data.location.lng;
     this.marker = new google.maps.Marker({
         map: map,
         position: data.location,
@@ -166,15 +168,17 @@ var locator = function(data, i) {
     bounds.extend(this.marker.position);
 }
 
+//function to get data from third party api
 function getdata(marker) {
     var query = marker.title;
-    var msg = "Error no article found for this title"
+    var msg = 'Error no article found for this title'
     var wikiUrl = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + query;
     $.ajax({
             url: wikiUrl,
             dataType: "jsonp",
         }).done(function(response) {
-            var wikiStr = response[1];
+            var wikiStr = response[1][0];
+            console.log(wikiStr);
             var wikipediaURL = 'https://en.wikipedia.org/wiki/' + wikiStr;
             var content = '<div><h2>' + marker.title + '</h2></div><div id="pano"></div>' + '<br><br><h3>' + 'Wikipedia' + '</h3>' + '<a href="' + wikipediaURL + '">' + '<h6>' + response[2] + '</h6></a>'
             largeInfowindow.setContent(content);
@@ -185,11 +189,11 @@ function getdata(marker) {
         });
 }
 
-
+//viewmodel function 
 var ViewModel = function() {
     var self = this;
     this.LocationList = ko.observableArray([]);
-    this.searchLocation = ko.observable("")
+    this.searchLocation = ko.observable('')
 
     for (var i = 0; i < locations.length; i++) {
         self.LocationList.push(new locator(locations[i], i));
@@ -226,15 +230,15 @@ var ViewModel = function() {
             return ko.utils.arrayFilter(self.LocationList(), function(Location) {
                 var title = Location.title().toLowerCase();
                 var matching = title.indexOf(search);
-          	    var matchVal = null;
+                var matchVal = null;
                 
-				if (matching != -1) {
+                if (matching != -1) {
                     matchVal = true;
                     Location.marker.setVisible(true);
                 } else {
-					matchVal = false;
+                    matchVal = false;
                     Location.marker.setVisible(false);
-				}
+                }
                  return matchVal;
             });
         }
@@ -246,5 +250,5 @@ var ViewModel = function() {
         google.maps.event.trigger(marker, 'click');
     };
 
-	};
+    };
   

@@ -180,7 +180,7 @@ function getdata(marker) {
             var wikiStr = response[1][0];
             console.log(wikiStr);
             var wikipediaURL = 'https://en.wikipedia.org/wiki/' + wikiStr;
-            var content = '<div><h2>' + marker.title + '</h2></div><div id="pano"></div>' + '<br><br><h3>' + 'Wikipedia' + '</h3>' + '<a href="' + wikipediaURL + '">' + '<h6>' + response[2] + '</h6></a>'
+            var content = '<div><h2>' + marker.title + '</h2></div><div id="pano"></div>' + '<br><br><h3>' + 'Wikipedia' + '</h3>' + '<a href="' + wikipediaURL + '">' + '<h6>' + response[2][0] + '</h6></a>'
             largeInfowindow.setContent(content);
             populateInfoWindow(marker, largeInfowindow);
         })

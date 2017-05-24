@@ -228,7 +228,7 @@ var ViewModel = function() {
 
         } else {
             return ko.utils.arrayFilter(self.LocationList(), function(Location) {
-                var title = Location.title().toLowerCase();
+                var title = Location.title.toLowerCase();
                 var matching = title.indexOf(search);
                 var matchVal = null;
                 
